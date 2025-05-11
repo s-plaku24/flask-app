@@ -1,3 +1,27 @@
+from flask import Flask, render_template
+import os
+import redis
+import pandas as pd
+
+app = Flask(__name__, template_folder='template')  # Note: using 'template' folder instead of default 'templates'
+
+# Redis connection
+redis_host = os.environ.get('REDIS_HOST', 'redis')
+redis_password = os.environ.get('REDIS_PASSWORD', '')
+redis_conn = redis.Redis(host=redis_host, port=6379, password=redis_password)
+
+def get_hit_count():
+    """Increment and return the visitor count"""
+    try:
+        return redis_conn.incr('hits')
+    except redis.exceptions.ConnectionError:
+        return '<cannot connect to Redis>'
+
+@app.route('/')
+def hello():
+    count = get_hit_count()
+    return render_template('hello.html', count=count, name='BIPM')
+
 @app.route('/titanic')
 def titanic():
     count = get_hit_count()
@@ -26,3 +50,6 @@ def titanic():
                          table_html=table_html, 
                          count=count,
                          chart_data=chart_data)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80, debug=True)
