@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Titanic Dataset</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .data {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1em 0;
+        }
+        .data th, .data td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .data th {
+            background-color: #f2f2f2;
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 2em auto;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Titanic Dataset</h1>
+        <p>This page has been visited {{ count }} times.</p>
+        
+        <div class="chart-container">
+            <canvas id="survivalChart"></canvas>
+        </div>
+        
+        <h2>First 5 Rows</h2>
+        {{ table_html|safe }}
+        
+        <p><a href="/">Back to Home</a></p>
+    </main>
+    <footer>
+        <p>Sebastiano</p>
+    </footer>
+    
+    <script>
+        const ctx = document.getElementById('survivalChart').getContext('2d');
+        const chartData = {
+            labels: {{ chart_data.labels|tojson|safe }},
+            datasets: {{ chart_data.datasets|tojson|safe }}
+        };
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

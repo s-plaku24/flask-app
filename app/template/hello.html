@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My first dynamic Website</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+
+<body>
+    <main>
+        <h1>I have been seen {{ count }} times.</h1>
+        <ul>
+            {% for i in range(1, count+1) %}
+            <li>{{ i }}: Hello {{ name }}! </li>
+            {% endfor %}
+        </ul>
+        <p><a href="https://www.hwr-berlin.de/" target="_blank">Visit HWR Berlin</a></p>
+        <p><a href="/titanic">View Titanic Dataset</a></p>
+    </main>
+    <footer>
+        <p>Sebastiano</p>
+    </footer>
+</body>
+
+</html>
