@@ -15,11 +15,13 @@ def get_hit_count():
     try:
         return int(redis_conn.incr('hits'))
     except redis.exceptions.ConnectionError:
-        return '<cannot connect to Redis>'
+        return 0  # Return 0 instead of a string
 
 @app.route('/')
 def hello():
     count = get_hit_count()
+    if isinstance(count, str):  # If it's an error string
+        return f"Redis connection error: {count}"
     return render_template('hello.html', count=count, name='BIPM')
 
 @app.route('/titanic')
