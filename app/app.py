@@ -13,7 +13,7 @@ redis_conn = redis.Redis(host=redis_host, port=6379, password=redis_password)
 def get_hit_count():
     """Increment and return the visitor count"""
     try:
-        return redis_conn.incr('hits')
+        return int(redis_conn.incr('hits'))
     except redis.exceptions.ConnectionError:
         return '<cannot connect to Redis>'
 
